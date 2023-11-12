@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "username": "pedro",
+      "email": "pedro@gmail.com",
+      "password": "123"
+    },
+    {
+      "username": "pedro",
+      "email": "pedro02@gmail.com",
+      "password": "123",
+      "confirmpassword": ""
+    },
+    {
+      "username": "Luisa Borges",
+      "email": "luisabordes@gmail.com",
+      "password": "123",
+      "confirmpassword": "123"
+    },
+    {
+      "username": "",
+      "email": "",
+      "password": "",
+      "confirmpassword": ""
+    }
+  ]
+}

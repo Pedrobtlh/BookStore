@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+body {
+  background: linear-gradient(to bottom, #3498db, #65a9d7, #9cd6f5);
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+}
+
+.container-navbar {
+  width: 95vw;
+  margin-left: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container-navbar a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.container-navbar h1 {
+  font-size: 38px;
+}
+
+.links-navbar {
+  display: flex;
+  gap: 20px;
+}
+
+.links-navbar a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.section {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-control h1 {
+  color: #3498db;
+}
+
+label {
+  font-size: 1.2em;
+  color: #3498db;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #65a9d7;
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #3498db;
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+  background-color: #65a9d7;
+}
+
+.error {
+  color: red;
+}

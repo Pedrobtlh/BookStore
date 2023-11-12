@@ -1,0 +1,59 @@
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookStore</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <navbar class="navbar">
+      <div class="container-navbar">
+        <a href="/"><h1>BookStore</h1></a>
+        <div class="links-navbar">
+          <a href="#">Seus Favoritos</a>
+          <a href="/cadastrar">Criar Conta</a>
+          <a href="/login">Login</a>
+        </div>
+      </div>
+    </navbar>
+
+    <section class="section">
+      <div class="container-section">
+        <form action="/cadastrar" method="post">
+          <div class="form-control">
+
+            <h1>Faça seu Cadastro</h1>
+
+            <label for="username">Digite o seu Usuário</label>
+            <input type="text" name="username" id="username" required />
+
+            <label for="email">Digite o seu E-mail</label>
+            <input type="email" name="email" id="email" required />
+
+            <label for="password">Digite sua Senha</label>
+            <input type="password" name="password" id="password" required />
+
+            <label for="confirmpassword">Confirme sua Senha</label>
+            <input
+              type="password"
+              name="confirmpassword"
+              id="confirmpassword"
+              required
+            />
+
+            <input type="submit" value="Cadastrar" />
+
+            {{#if error}}
+              <p class="error">{{error}}</p>
+            {{/if}}
+
+            {{#if erroremail}}
+              <p class="error">{{erroremail}}</p>
+            {{/if}}
+          </div>
+        </form>
+      </div>
+
+    </section>
+  </body>
+</html>
