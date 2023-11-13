@@ -11,11 +11,17 @@
         <a href="/"><h1>BookStore</h1></a>
         <div class="links-navbar">
           <a href="#">Seus Favoritos</a>
-          <a href="/cadastrar">Criar Conta</a>
-          <a href="/login">Login</a>
+
+          {{#if username}}
+            <a href="/criar_review">Criar Review</a>
+            <a>Olá, {{username}}</a>
+            <a href="#">Sair</a>
+          {{else}}
+            <a href="/cadastrar">Criar Conta</a>
+            <a href="/login">Login</a>
+          {{/if}}
         </div>
       </div>
     </navbar>
-
   </body>
 </html>

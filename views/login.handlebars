@@ -30,6 +30,9 @@
 
             <input type="submit" value="Login" />
           </div>
+          {{#if errorlogin}}
+            <p class="error">{{errorlogin}}</p>
+          {{/if}}
         </form>
       </div>
     </section>
