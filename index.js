@@ -2,6 +2,10 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const fs = require("fs");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const session = require("express-session");
+const flash = require("express-flash");
 
 const app = express();
 
@@ -9,16 +13,56 @@ app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
 app.use(express.urlencoded({ extended: false }));
 
-// Função middleware para processar dados do usuário
-app.use((req, res, next) => {
+// Express Flash
+app.use(flash());
+
+// Express Session
+app.use(
+  session({
+    secret: "secretpassphrase",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Configuração do Passport
+passport.use(
+  new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+    console.log("Attempted login with email:", email);
+
+    const usersData = JSON.parse(fs.readFileSync("db/Users.json"));
+
+    const user = usersData.users.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (user) {
+      console.log("Login successful:", user.username);
+      return done(null, user);
+    } else {
+      console.log("Login failed: Invalid credentials");
+      return done(null, false, { message: "Credenciais Inválidas" });
+    }
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
   const usersData = JSON.parse(fs.readFileSync("db/Users.json"));
+  const user = usersData.users.find((user) => user.id === id);
+  done(null, user);
+});
 
-  const user = usersData.users.find(
-    (user) =>
-      user.email === req.body.email && user.password === req.body.password
-  );
-
-  res.locals.username = user ? user.username : null; // Adiciona o nome do usuário aos locais globais
+// Middleware para adicionar variáveis locais ao res.locals
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.username = req.user ? req.user.username : null;
   next();
 });
 
@@ -36,12 +80,21 @@ app.get("/cadastrar", (req, res) => {
 });
 
 app.post("/cadastrar", (req, res) => {
-  const newUser = ({ username, email, password, confirmpassword } = req.body);
-
   const usersData = JSON.parse(fs.readFileSync("db/Users.json"));
 
+  // Gerador de Id
+  const newUserId = usersData.users.length + 1;
+
+  const newUser = {
+    id: newUserId,
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    confirmpassword: req.body.confirmpassword,
+  };
+
   // Verificação de Senha
-  if (password !== confirmpassword) {
+  if (newUser.password !== newUser.confirmpassword) {
     return res.render("cadastrar", {
       error: "As senhas não coincidem",
       username: res.locals.username,
@@ -49,7 +102,9 @@ app.post("/cadastrar", (req, res) => {
   }
 
   // Verificação se Email já existe
-  const emailExists = usersData.users.some((user) => user.email === email);
+  const emailExists = usersData.users.some(
+    (user) => user.email === newUser.email
+  );
 
   if (emailExists) {
     return res.render("cadastrar", {
@@ -70,23 +125,52 @@ app.get("/login", (req, res) => {
   res.render("login", { username: res.locals.username });
 });
 
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
 
-  const usersData = JSON.parse(fs.readFileSync("db/Users.json"));
+    if (!user) {
+      console.log("Login failed:", info.message);
+      return res.render("login", { errorlogin: info.message });
+    }
 
-  const user = usersData.users.find(
-    (user) => user.email === email && user.password === password
-  );
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
 
-  if (user) {
-    res.render("home", { username: user.username });
-  } else {
-    res.render("login", {
-      errorlogin: "Confira o Email e a Senha",
-      username: res.locals.username,
+      console.log("Login successful");
+      return res.redirect("/");
     });
+  })(req, res, next);
+});
+
+// Página de Logout
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    res.redirect("/"); // Redireciona para a página inicial ou qualquer outra página desejada
+  });
+});
+
+// Middleware para verificar autenticação
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
   }
+  res.redirect("/login");
+}
+
+// Exemplo de como usar o middleware para proteger uma rota
+app.get("/rota_protegida", isAuthenticated, (req, res) => {
+  res.send("Esta rota é protegida");
 });
 
 // Configuração do CSS
