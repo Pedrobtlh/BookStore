@@ -173,6 +173,47 @@ app.get("/rota_protegida", isAuthenticated, (req, res) => {
   res.send("Esta rota é protegida");
 });
 
+// Renderizar a página de criação de review
+app.get("/createreview", isAuthenticated, (req, res) => {
+  res.render("createreview", { username: req.user.username });
+});
+
+// Processar o envio do formulário de Criação de Review
+app.post("/createreview", isAuthenticated, (req, res) => {
+  // Lê os dados dos usuários do arquivo JSON
+  const usersData = JSON.parse(fs.readFileSync("db/Users.json", "utf8"));
+
+  // Encontra o índice do usuário logado
+  const userIndex = usersData.users.findIndex(
+    (user) => user.id === req.user.id
+  );
+
+  if (userIndex !== -1) {
+    // Inicializa o array de reviews se ainda não existir
+    if (!usersData.users[userIndex].reviews) {
+      usersData.users[userIndex].reviews = [];
+    }
+
+    // Cria um novo objeto de review
+    const newReview = {
+      titulo: req.body.titulo,
+      conteudo: req.body.conteudo,
+      nota: parseInt(req.body.nota),
+    };
+
+    // Adiciona o novo review aos dados do usuário
+    usersData.users[userIndex].reviews.push(newReview);
+
+    // Escreve os dados atualizados no arquivo JSON
+    fs.writeFileSync("db/Users.json", JSON.stringify(usersData, null, 2));
+
+    // Redireciona para a página inicial ou outra página desejada
+    res.redirect("/");
+  } else {
+    // Caso não encontre o usuário, lida com o erro
+    res.status(500).send("Erro ao encontrar o usuário.");
+  }
+});
 // Configuração do CSS
 app.use(express.static(path.join(__dirname, "public")));
 

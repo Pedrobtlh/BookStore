@@ -13,7 +13,7 @@
           <a href="#">Seus Favoritos</a>
 
           {{#if username}}
-            <a href="/criar_review">Criar Review</a>
+            <a href="/createreview">Criar Review</a>
             <a>Olá, {{username}}</a>
             <a href="/logout">Sair</a>
           {{else}}
@@ -23,5 +23,31 @@
         </div>
       </div>
     </navbar>
+
+    <div class="timeline">
+      {{#if username}}
+        {{#each users}}
+          {{#if reviews}}
+            {{#each reviews}}
+              <div class="post">
+                <h3>{{this.titulo}}</h3>
+                <p>{{this.conteudo}}</p>
+                <p>Nota: {{this.nota}}</p>
+              </div>
+            {{/each}}
+          {{else}}
+            <div class="post">
+              <p>Você ainda não fez nenhum review.</p>
+            </div>
+          {{/if}}
+        {{/each}}
+      {{else}}
+        <div class="main">
+          <h2>Crie sua Conta ou Faça login para Ver os Melhores Reviews de
+            Livros</h2>
+        </div>
+      {{/if}}
+    </div>
+
   </body>
 </html>

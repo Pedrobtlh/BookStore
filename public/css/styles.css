@@ -98,3 +98,26 @@ input[type="submit"]:hover {
 .error {
   color: red;
 }
+
+.main {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+}
+
+.main h2 {
+  margin-top: 5rem;
+  font-size: 40px;
+}
+
+.timeline {
+  border: 1px solid red;
+  height: 80%;
+}
+
+.reviews {
+  width: 100vw;
+  height: 100vh;
+  border: 2px solid green;
+}

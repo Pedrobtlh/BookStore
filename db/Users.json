@@ -11,7 +11,8 @@
       "username": "pedro",
       "email": "pedro666@gmail.com",
       "password": "123",
-      "confirmpassword": "123"
+      "confirmpassword": "123",
+      "reviews": []
     },
     {
       "id": 3,

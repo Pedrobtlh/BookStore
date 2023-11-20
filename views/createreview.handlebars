@@ -1,0 +1,39 @@
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookStore - Criar Review</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <navbar class="navbar">
+      <div class="container-navbar">
+        <a href="/"><h1>BookStore</h1></a>
+        <div class="links-navbar">
+          <a href="#">Seus Favoritos</a>
+          <a href="/createreview">Criar Review</a>
+          <a>Olá, {{username}}</a>
+          <a href="/logout">Sair</a>
+        </div>
+      </div>
+    </navbar>
+
+    <div class="main">
+      <form method="POST" action="/createreview" class="container-section">
+        <div class="form-control">
+          <h1>Crie seu Review</h1>
+          <label for="titulo">Título:</label>
+          <input type="text" id="titulo" name="titulo" required />
+
+          <label for="conteudo">Conteúdo:</label>
+          <textarea id="conteudo" name="conteudo" required></textarea>
+
+          <label for="nota">Nota (0 a 5):</label>
+          <input type="number" id="nota" name="nota" min="0" max="5" required />
+        </div>
+
+        <input type="submit" value="Criar Review" />
+      </form>
+    </div>
+  </body>
+</html>
